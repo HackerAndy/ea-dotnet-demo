@@ -18,6 +18,15 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+builder.Services.ConfigureSwaggerGen(setup =>
+{
+    setup.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Weather Forecasts",
+        Version = "v1"
+    });
+});
+
 app.UseAuthorization();
 
 app.MapControllers();
