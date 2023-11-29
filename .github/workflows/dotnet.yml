@@ -35,13 +35,13 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --no-restore
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/${{ env.AZURE_WEBAPP_NAME }}
+      run: dotnet publish -c bin -o ${{env.DOTNET_ROOT}}/${{ env.AZURE_WEBAPP_NAME }}
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
