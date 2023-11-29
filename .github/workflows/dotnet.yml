@@ -46,7 +46,15 @@ jobs:
       run: dotnet build
       
     - name: Test with the dotnet CLI
-      run: dotnet test
+      run: dotnet test --logger trx --results-directory "TestResults"
+
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-results
+        path: TestResults
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
   
     - name: dotnet publish
       run: dotnet publish -c bin -o ${{env.DOTNET_ROOT}}/${{ env.AZURE_WEBAPP_NAME }}
