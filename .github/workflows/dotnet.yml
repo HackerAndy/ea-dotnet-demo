@@ -43,7 +43,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --configuration Release ${{env.AZURE_WEBAPP_NAME}}
+      run: dotnet build --configuration Release
       
     - name: Test with the dotnet CLI
       run: dotnet test --logger trx --results-directory "TestResults"
@@ -57,7 +57,7 @@ jobs:
       if: ${{ always() }}
 
     - name: Create the package
-      run: dotnet pack --configuration Release ${{env.AZURE_WEBAPP_NAME}}
+      run: dotnet pack --configuration Release
         
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/${{env.AZURE_WEBAPP_NAME}}
