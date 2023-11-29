@@ -9,7 +9,7 @@ using dotnet_api_demo.Models;
 
 namespace dotnet_api_demo.Controllers
 {
-    [Route("/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TodoItemsController : ControllerBase
     {

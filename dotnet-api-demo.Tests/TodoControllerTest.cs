@@ -7,8 +7,9 @@ namespace dotnet_api_demo.Tests;
 public class InMemoryBloggingControllerTest
 {
     [TestMethod]
-    public void Test1()
+    public void TestMethod1()
     {
-
+        Assert.AreEqual(true, true, "Is true is equal to true");
     }
+
 }
