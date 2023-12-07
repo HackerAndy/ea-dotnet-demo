@@ -1,13 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Build and deploy .net core app on Azure Web App
-
-env:
-  AZURE_WEBAPP_NAME: dotnet-api-demo  # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8'                 # set this to the .NET Core version to use
-
+name: .NET
 
 on:
   push:
@@ -15,38 +9,32 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  AZURE_WEBAPP_NAME: dotnet-api-demo  # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '8'                 # set this to the .NET Core version to use
+
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
+    # Checkout the repo
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    
-    # Depending on the number of dependencies, it may be faster to use the dependency cache. 
-    # Projects with many large dependencies should see a performance increase as it cuts down 
-    # the time required for downloading. Projects with fewer dependencies may not see a 
-    # significant performance increase and may even see a slight decrease due to how NuGet 
-    # installs cached dependencies. The performance varies from project to project.
-    # - name: Set up dependency caching for faster builds
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/.nuget/packages
-    #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-nuget-
+        dotnet-version: ${{ env.DOTNET_VERSION }} 
+   
+    - name: Restore Dependencies & Build for Release
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
 
-    - name: Install dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --configuration Release
-      
-    - name: Test with the dotnet CLI
-      run: dotnet test --logger trx --results-directory "TestResults"
+    - name: Test
+      run: dotnet test --no-build --logger trx --results-directory "TestResults"
 
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
@@ -58,33 +46,33 @@ jobs:
 
     - name: Create the package
       run: dotnet pack --configuration Release
-        
-    - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/${{env.AZURE_WEBAPP_NAME}}
+
+    - name: Create publish artifact
+      run: dotnet publish -c Release -o ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.AZURE_WEBAPP_NAME}}
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
       with:
         name: ${{env.AZURE_WEBAPP_NAME}}_artifact
-        path: ${{env.DOTNET_ROOT}}/${{env.AZURE_WEBAPP_NAME}}
+        path: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.AZURE_WEBAPP_NAME}}
   
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   # environment: # https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
+  #   #   name: 'prod'
+  #   #   url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{env.AZURE_WEBAPP_NAME}}_artifact
+  #   steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v
+  #       with:
+  #         name: ${{env.AZURE_WEBAPP_NAME}}_artifact
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@2
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+  #         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

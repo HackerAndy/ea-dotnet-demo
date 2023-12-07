@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1706.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-api-demo.Tests", "dotnet-api-demo.Tests.csproj", "{7B7D6C25-CB24-4205-9F1D-5F5729A089EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApi", "TodoApi\TodoApi.csproj", "{F1741E04-61CF-44A3-980A-136ED5498181}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B7D6C25-CB24-4205-9F1D-5F5729A089EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B7D6C25-CB24-4205-9F1D-5F5729A089EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B7D6C25-CB24-4205-9F1D-5F5729A089EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B7D6C25-CB24-4205-9F1D-5F5729A089EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1741E04-61CF-44A3-980A-136ED5498181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1741E04-61CF-44A3-980A-136ED5498181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1741E04-61CF-44A3-980A-136ED5498181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1741E04-61CF-44A3-980A-136ED5498181}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {ADF7F8FC-F3DE-4680-A9C2-A38AECAC44AF}
+		SolutionGuid = {02D0C144-0560-407E-B677-06411DA77A17}
 	EndGlobalSection
 EndGlobal
