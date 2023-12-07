@@ -18,7 +18,7 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     # Checkout the repo
@@ -59,7 +59,7 @@ jobs:
         path: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.DOT_NET_APP_NAME}}
   
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     # environment: # https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
     #   name: 'prod'
